@@ -33,7 +33,14 @@ public class TaskService {
     }
 
     public Task updateTask(Long id, Task updatedTask) {
-        updatedTask.setId(id);
-        return taskRepository.save(updatedTask);
+        Task existingTask = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task não encontrada"));
+
+        existingTask.setTitle(updatedTask.getTitle());
+        existingTask.setDescription(updatedTask.getDescription());
+        existingTask.setStatus(updatedTask.getStatus());
+        existingTask.setData(updatedTask.getData());
+
+        return taskRepository.save(existingTask);
     }
 }
